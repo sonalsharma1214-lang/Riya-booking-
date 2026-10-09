@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Spa Booking - ₹300 Advance</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Poppins',sans-serif;box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 30% 20%, #d8b4fe, #7c3aed 40%, #2d0a4a 90%);background-attachment:fixed;padding:0;overflow-x:hidden}
+.bg-blur{position:fixed;width:400px;height:400px;background:rgba(255,255,255,.15);filter:blur(80px);border-radius:50%;z-index:0}
+.b1{top:-50px;left:-50px} .b2{bottom:-50px;right:-50px;background:rgba(167,139,250,.4)}
+.container{position:relative;z-index:2;max-width:480px;margin:auto;padding:16px}
+.glass{background:rgba(255,255,255,.92);backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.5);border-radius:24px;box-shadow:0 20px 60px rgba(0,0,0,.3), inset 0 1px 0 rgba(255,255,255,.8);overflow:hidden;transform-style:preserve-3d;animation:float 6s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.header{padding:20px;text-align:center;border-bottom:1px solid rgba(0,0,0,.05)}
+.header .logo{width:56px;height:56px;background:linear-gradient(135deg,#7c3aed,#2d0a4a);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;color:#fff;font-size:28px;box-shadow:0 8px 20px rgba(124,58,237,.4)}
+.header h1{margin:0;font-size:22px;color:#2d0a4a}
+.header p{margin:4px 0 0;color:#666;font-size:12px}
+.badge{display:inline-block;background:#f3e8ff;color:#6d28d9;padding:6px 12px;border-radius:20px;font-size:11px;font-weight:700;margin:14px 20px}
+.amount{text-align:center} .amount h2{margin:0;font-size:42px;color:#2d0a4a}
+.pay-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:16px 20px}
+.pay-btn{padding:14px;border-radius:16px;text-align:center;text-decoration:none;font-weight:700;font-size:13px;color:#111;background:rgba(255,255,255,.8);border:1px solid rgba(0,0,0,.06);box-shadow:0 4px 15px rgba(0,0,0,.06)}
+.qr-box{margin:0 20px;background:linear-gradient(180deg,#fff,#faf5ff);border:1.5px dashed #c4b5fd;border-radius:18px;padding:18px;text-align:center}
+.qr{width:200px;height:200px;margin:10px auto;background:#fff;padding:10px;border-radius:16px;box-shadow:0 8px 25px rgba(0,0,0,.1)}
+.qr-info{margin-top:14px;background:#fff;border-radius:12px;padding:12px;text-align:left;font-size:13px;line-height:1.8;border:1px solid #f0f0f0}
+.form{padding:20px} .form h3{margin:0 0 14px;color:#2d0a4a;font-size:16px}
+.inp{width:100%;padding:14px 16px;margin:7px 0;border:1.5px solid #e9d5ff;border-radius:12px;font-size:14px;background:rgba(255,255,255,.9);outline:none}
+.btn{width:100%;padding:16px;background:linear-gradient(90deg,#2d0a4a,#7c3aed);color:#fff;border:none;border-radius:14px;font-weight:700;font-size:16px;cursor:pointer;box-shadow:0 10px 25px rgba(124,58,237,.4);margin-top:10px}
+#successPage{display:none;text-align:center;padding:40px 24px}
+.tick{width:90px;height:90px;background:linear-gradient(135deg,#10b981,#059669);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:46px;color:#fff;animation:pop .6s cubic-bezier(.34,1.56,.64,1)}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.success-card{background:#fff;border-radius:16px;padding:16px;margin:18px 0;text-align:left;font-size:13px;line-height:1.9;border:1px solid #eee}
+</style>
+</head>
+<body>
+<div class="bg-blur b1"></div><div class="bg-blur b2"></div>
+<div class="container">
+<div class="glass" id="mainCard">
+<div id="page1">
+<div class="header"><div class="logo">💆</div><h1>SPA BOOKING</h1><p>Premium Relaxation & Wellness • Secure Payment</p></div>
+<span class="badge">🔒 SECURE • UPI PAYMENT</span>
+<div class="amount"><h2>₹300</h2><small>Advance Booking Amount</small></div>
+<div class="pay-grid">
+<a class="pay-btn" id="ppBtn">📱 PhonePe</a>
+<a class="pay-btn" id="gpBtn">GPay</a>
+<a class="pay-btn" id="ptBtn">💳 Paytm</a>
+</div>
+<div class="qr-box">
+<div style="font-weight:700;color:#2d0a4a;font-size:13px">SCAN & PAY WITH ANY UPI APP</div>
+<div class="qr" id="qrcode"></div>
+<div style="background:#7c3aed;color:#fff;display:inline-block;padding:6px 16px;border-radius:20px;font-weight:700;font-size:12px;margin-top:6px">Amount: ₹300 Fixed</div>
+<div class="qr-info">
+<b>💆 Service:</b> Spa Booking Advance<br>
+<b>👤 Merchant:</b> Spa Center<br>
+<b>🏦 UPI ID:</b> BHARATPE2R0A0O8R5032718@unitype<br>
+<b>💰 Amount:</b> ₹300<br>
+<b>✅ Verified & Secure</b>
+</div>
+</div>
+<div class="form">
+<h3>📝 Booking Details</h3>
+<input class="inp" id="name" placeholder="Aapka Pura Naam *">
+<input class="inp" id="bname" placeholder="Booking Kis Naam Se *">
+<input class="inp" id="phone" type="tel" placeholder="Mobile Number *">
+<input class="inp" id="datetime" type="text" placeholder="Date & Time - Kab aana hai? *">
+<input class="inp" id="service" placeholder="Service Kaunsi Chahiye?">
+<input class="inp" id="txn" placeholder="UTR / Transaction ID *">
+<button class="btn" id="submitBtn" onclick="submitBooking()">✅ Confirm Booking →</button>
+</div>
+</div>
+<div id="successPage">
+<div class="tick">✓</div>
+<h2 style="color:#2d0a4a;margin:0">Booking Confirmed!</h2>
+<p style="color:#666;font-size:13px">Aapki booking safalta purvak ho gayi hai</p>
+<div class="success-card" id="successDetails"></div>
+<button class="btn" onclick="location.reload()">🔙 New Booking</button>
+</div>
+</div>
+</div>
+<script>
+const UPI="BHARATPE2R0A0O8R5032718@unitype", NAME="Spa Center", AMT="300", TOKEN="8679346636:AAHUBTzrVGt6N10A0zz3zUw9rvasNp9RFV4";
+let CHAT_ID=localStorage.getItem('tg_chat_spa3d')||"";
+const upiStr=`upi://pay?pa=${UPI}&pn=${encodeURIComponent(NAME)}&am=${AMT}&cu=INR&tn=Spa Booking Advance 300`;
+document.getElementById('ppBtn').href=upiStr; document.getElementById('gpBtn').href=upiStr; document.getElementById('ptBtn').href=upiStr;
+new QRCode(document.getElementById("qrcode"),{text:upiStr,width:180,height:180});
+async function submitBooking(){
+ const n=document.getElementById('name').value.trim(), bn=document.getElementById('bname').value.trim(), ph=document.getElementById('phone').value.trim(), dt=document.getElementById('datetime').value.trim(), srv=document.getElementById('service').value.trim(), tx=document.getElementById('txn').value.trim();
+ if(!n||!bn||!ph||!dt||!tx){alert("Saare * wale fields bharo");return;}
+ const btn=document.getElementById('submitBtn'); btn.innerHTML="⏳ Sending..."; btn.disabled=true;
+ if(!CHAT_ID){
+  try{ const r=await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates`).then(x=>x.json());
+   if(r.result && r.result.length>0){ CHAT_ID=r.result[r.result.length-1].message.chat.id; localStorage.setItem('tg_chat_spa3d',CHAT_ID); }
+   else{ alert("Pehle @prive_coinbot ko /start bhejo"); window.open("https://t.me/prive_coinbot","_blank"); btn.innerHTML="✅ Confirm Booking →"; btn.disabled=false; return; }
+  }catch(e){ return; }
+ }
+ const msg=`💆 NEW SPA BOOKING - ₹${AMT}\n\n👤 Name: ${n}\n🏷️ Booking Name: ${bn}\n📞 Mobile: ${ph}\n🕒 Date/Time: ${dt}\n💆 Service: ${srv}\n💳 Txn: ${tx}\n🏦 UPI: ${UPI}`;
+ const res=await fetch(`https://api.telegram.org/bot${TOKEN}/sendMessage`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({chat_id:CHAT_ID,text:msg})}).then(r=>r.json());
+ if(res.ok){
+  document.getElementById('page1').style.display='none';
+  document.getElementById('successDetails').innerHTML=`<b>👤 Name:</b> ${n}<br><b>🏷️ Booking:</b> ${bn}<br><b>📞 Mobile:</b> ${ph}<br><b>🕒 Date/Time:</b> ${dt}<br><b>💆 Service:</b> ${srv}<br><b>💳 Txn:</b> ${tx}<br><b>💰 Paid:</b> ₹${AMT}`;
+  document.getElementById('successPage').style.display='block';
+ } else { alert("Error"); btn.disabled=false; }
+}
+</script>
+</body>
+  </html>
