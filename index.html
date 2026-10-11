@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kavya - Professional Booking Confirmation</title>
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+*{font-family:'Outfit',sans-serif;box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(120% 120% at 50% 0%,#fef3c7 0%,#a78bfa 35%,#4c1d95 80%);display:flex;justify-content:center}
+.phone{width:100%;max-width:430px;background:rgba(255,255,255,.96);min-height:100vh;box-shadow:0 25px 70px rgba(0,0,0,.3);border-radius:0 0 24px 24px}
+.header{margin:14px;background:linear-gradient(135deg,#fff,#f8fafc);border-radius:20px;padding:18px;text-align:center;position:relative;border:1px solid #e5e7eb;box-shadow:0 12px 30px rgba(0,0,0,.12)}
+.header h1{font-size:22px;font-weight:900;background:linear-gradient(180deg,#1e293b,#6d28d9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:.5px}
+.header p{font-size:10px;color:#6b7280;font-weight:700;margin-top:4px;letter-spacing:1px}
+.safe{margin-top:8px;display:inline-flex;background:linear-gradient(135deg,#dcfce7,#bbf7d0);border:1px solid #86efac;color:#166534;font-size:9px;font-weight:800;padding:6px 14px;border-radius:20px}
+.topPay{position:absolute;top:10px;right:10px;display:flex;gap:6px}
+.payIcon{width:44px;height:44px;background:#fff;border-radius:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px rgba(0,0,0,.18),inset 0 1px 0 rgba(255,255,255,.8);border:1.5px solid #e5e7eb;text-decoration:none;transform:translateZ(0);transition:.2s}
+.payIcon:active{transform:scale(0.9) translateY(2px);box-shadow:0 2px 8px rgba(0,0,0,.15)}
+.payIcon img{width:28px;height:28px;object-fit:contain}
+.card{margin:14px;background:#fff;border-radius:22px;padding:16px;box-shadow:0 12px 32px rgba(0,0,0,.08);border:1px solid #f1f5f9}
+.cardTitle{text-align:center;font-weight:900;color:#4c1d95;font-size:13px;letter-spacing:.5px}
+.rateGrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.rateItem{background:linear-gradient(180deg,#ffffff,#f5f3ff);border-radius:16px;padding:14px;text-align:center;border:2px solid #e5e7eb;cursor:pointer;box-shadow:0 6px 16px rgba(0,0,0,.04),inset 0 1px 0 #fff;transition:.25s;transform:perspective(600px) translateZ(0)}
+.rateItem.active{border-color:#7c3aed;background:linear-gradient(180deg,#ede9fe,#ddd6fe);transform:perspective(600px) translateZ(12px) scale(1.04);box-shadow:0 14px 28px rgba(124,58,237,.25)}
+.rateItem b{font-size:12px;color:#1e293b;display:block}
+.rateItem span{font-size:20px;font-weight:900;color:#6d28d9;display:block;margin-top:2px}
+.rateItem small{font-size:8px;color:#6b7280}
+.payMode{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.modeBtn{padding:14px;border-radius:14px;text-align:center;border:2px solid #e5e7eb;background:#f8fafc;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 6px 14px rgba(0,0,0,.05);transition:.2s}
+.modeBtn.active{border-color:#10b981;background:linear-gradient(180deg,#dcfce7,#bbf7d0);color:#166534;box-shadow:0 10px 20px rgba(16,185,129,.2);transform:translateY(-2px)}
+.qrWrap{display:flex;gap:12px;align-items:center;margin-top:14px}
+.qrBox{background:#fff;padding:10px;border-radius:16px;box-shadow:0 8px 24px rgba(0,0,0,.1);border:2px solid #dcfce7;text-align:center}
+.qr{width:110px;height:110px}
+.payInfo{flex:1;background:linear-gradient(135deg,#f0fdf4,#dcfce7);border:1.5px solid #86efac;border-radius:16px;padding:14px;text-align:center;box-shadow:inset 0 1px 0 #fff}
+.upiBox{margin-top:12px;background:linear-gradient(135deg,#0f172a,#312e81);border-radius:14px;padding:12px;display:flex;justify-content:space-between;align-items:center;color:#fff;box-shadow:0 10px 20px rgba(0,0,0,.2)}
+.upiBtns{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:12px}
+.upiBtn{background:linear-gradient(180deg,#fff,#f8fafc);border-radius:16px;padding:10px;text-align:center;border:1.5px solid #e5e7eb;text-decoration:none;display:flex;flex-direction:column;align-items:center;gap:5px;box-shadow:0 8px 18px rgba(0,0,0,.08),inset 0 1px 0 #fff;transition:.2s;transform:translateZ(0)}
+.upiBtn:active{transform:scale(0.94)}
+.upiBtn img{width:30px;height:30px;object-fit:contain}
+</style>
+</head>
+<body><div class="phone">
+<div class="header">
+<div class="topPay">
+<a class="payIcon" id="ppTop"><img src="https://cdn.iconscout.com/icon/free/png-256/free-phonepe-2752084-2284914.png?f=webp" alt="PhonePe"></a>
+<a class="payIcon" id="gpTop"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg" alt="GPay"></a>
+<a class="payIcon" id="ptTop"><img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-2752085-2284904.png?f=webp" alt="Paytm"></a>
+</div>
+<h1>KAVYA BOOKING</h1>
+<p>PROFESSIONAL CONFIRMATION SYSTEM</p>
+<div class="safe">🔒 100% SAFE & SECURE • VERIFIED • PREMIUM</div>
+<div style="font-size:8px;color:#6b7280;margin-top:5px;font-weight:800">TAP LOGO FOR DIRECT UPI PAY →</div>
+</div>
+
+<div class="card">
+<div class="cardTitle">✨ SELECT SERVICE & PRICE ✨</div>
+<div class="rateGrid">
+<div class="rateItem active" id="r2000" onclick="setService(2000,'1 Hour Service')"><b>1 Hour</b><span>₹2000</span><small>Standard</small></div>
+<div class="rateItem" id="r3000" onclick="setService(3000,'2 Hour Service')"><b>2 Hours</b><span>₹3000</span><small>Popular</small></div>
+<div class="rateItem" id="r4000" onclick="setService(4000,'3 Hour Service')"><b>3 Hours</b><span>₹4000</span><small>Premium</small></div>
+<div class="rateItem" id="r5000" onclick="setService(5000,'Full Day Service')"><b>Full Day</b><span>₹5000</span><small>12 Hours</small></div>
+<div class="rateItem" id="r6000" onclick="setService(6000,'Full Night Service')" style="grid-column:span 2"><b>Full Night - Most Popular</b><span>₹6000</span><small>Best Value • 10 Hours</small></div>
+</div>
+
+<div style="margin-top:14px;background:linear-gradient(90deg,#fef3c7,#fde68a);border:1px solid #fcd34d;border-radius:12px;padding:10px;text-align:center;font-size:10px;font-weight:800;color:#92400e">👇 Choose Payment Option - Professional</div>
+<div class="payMode">
+<div class="modeBtn active" id="m300" onclick="setMode(300)"><span>🔒</span><br>Only Booking<br><b>₹300 Advance</b><br><small style="font-size:8px">Confirm Seat</small></div>
+<div class="modeBtn" id="mFull" onclick="setMode('full')"><span>💎</span><br>Full Payment<br><b id="fullAmtTxt">₹2000 Full</b><br><small style="font-size:8px">No Extra Pay</small></div>
+</div>
+</div>
+
+<div class="card">
+<div style="text-align:center;font-size:10px;font-weight:800;color:#166534;background:#dcfce7;border-radius:10px;padding:7px">🔒 SECURE QR PAYMENT • DIRECT APP OPEN</div>
+<div class="qrWrap">
+<div class="qrBox"><div class="qr" id="qrcode"></div><b id="selAmt" style="font-size:11px;color:#4c1d95;display:block;margin-top:4px">₹300</b><small style="font-size:8px;color:#10b981;font-weight:800">✓ Safe</small></div>
+<div class="payInfo"><div style="font-size:9px;color:#6b7280;font-weight:700">YOU WILL PAY</div><div style="font-size:28px;font-weight:900;color:#166534" id="payAmt">₹300</div><div style="font-size:9px;color:#059669;font-weight:700" id="payType">Booking Advance</div><div style="margin-top:6px;background:#166534;color:#fff;font-size:7px;padding:4px 8px;border-radius:20px;display:inline-block">🔒 ENCRYPTED</div></div>
+</div>
+<div class="upiBox"><div><small style="opacity:.8;font-size:8px">✓ VERIFIED UPI • BANK SECURED</small><br><b style="font-size:10px">BHARATPE2R0A0O8R5032718@unitype</b></div><button onclick="copyUpi()" style="background:#fff;color:#4c1d95;border:none;padding:8px 12px;border-radius:10px;font-weight:900;font-size:10px">COPY</button></div>
+<div style="text-align:center;margin-top:8px;font-size:9px;font-weight:700;color:#166534">⏱️ <span id="timer">10:00</span> • 🆔 <span id="bidTop"></span> • 🛡️ Secure</div>
+<div class="upiBtns">
+<a class="upiBtn" id="ppBtn"><img src="https://cdn.iconscout.com/icon/free/png-256/free-phonepe-2752084-2284914.png?f=webp"><b>PhonePe</b><small style="font-size:7px;color:#10b981">Direct Open</small></a>
+<a class="upiBtn" id="gpBtn"><img src="https://upload.wikimedia.org/wikipedia/commons/f/f2/Google_Pay_Logo.svg"><b>Google Pay</b><small style="font-size:7px;color:#10b981">Direct Open</small></a>
+<a class="upiBtn" id="ptBtn"><img src="https://cdn.iconscout.com/icon/free/png-256/free-paytm-2752085-2284904.png?f=webp"><b>Paytm</b><small style="font-size:7px;color:#10b981">Direct Open</small></a>
+</div>
+  </div><div class="card" id="fCard">
+<div style="text-align:center"><h3 style="font-size:16px;color:#1e1b4b">Professional Booking Details</h3><p style="font-size:9px;color:#6b7280;font-weight:700;margin-top:2px">🔒 100% Confidential • Short & Secure • English</p></div>
+
+<label style="font-size:10px;font-weight:800;margin-top:10px;display:block;color:#4c1d95">Select Service Hours *</label>
+<select id="serviceSel" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:12px;margin-top:4px;background:#fff;font-weight:700">
+<option>1 Hour - Rs 2000</option>
+<option>2 Hour - Rs 3000</option>
+<option>3 Hour - Rs 4000</option>
+<option>Full Day - Rs 5000</option>
+<option>Full Night - Rs 6000</option>
+</select>
+
+<label style="font-size:10px;font-weight:800;margin-top:10px;display:block;color:#4c1d95">Your Full Name *</label>
+<input id="fname" placeholder="Enter Your Name" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:12px;margin-top:4px">
+
+<label style="font-size:10px;font-weight:800;margin-top:10px;display:block;color:#4c1d95">Booking Name (For Booking) *</label>
+<input id="bname" placeholder="Name for Booking" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:12px;margin-top:4px">
+
+<label style="font-size:10px;font-weight:800;margin-top:10px;display:block;color:#4c1d95">Mobile Number *</label>
+<input id="mobile" type="tel" placeholder="Enter Mobile Number" style="width:100%;padding:12px;border:1.5px solid #e5e7eb;border-radius:12px;margin-top:4px">
+
+<div style="margin-top:12px;border:2px dashed #10b981;background:linear-gradient(180deg,#f0fdf4,#ecfdf5);border-radius:16px;padding:14px;text-align:center;box-shadow:inset 0 1px 0 #fff">
+<b style="font-size:12px;color:#166534">📸 Upload Payment Screenshot *</b><br>
+<small style="font-size:9px;color:#6b7280">Required for verification - Click to select</small><br>
+<input type="file" id="ss" accept="image/*" style="margin-top:10px;width:100%;padding:9px;background:#fff;border:1.5px solid #bbf7d0;border-radius:10px">
+<img id="preview" style="display:none;width:100%;max-height:180px;margin-top:10px;border-radius:12px;border:2px solid #10b981;box-shadow:0 8px 20px rgba(16,185,129,.2)">
+<div id="fileName" style="font-size:10px;color:#059669;margin-top:6px;font-weight:800"></div>
+</div>
+
+<button id="sBtn" onclick="doBook()" style="width:100%;margin-top:14px;padding:15px;background:linear-gradient(180deg,#10b981 0%,#059669 50%,#047857 100%);color:#fff;border:none;border-radius:14px;font-weight:900;font-size:14px;box-shadow:0 12px 24px rgba(16,185,129,.4),inset 0 1px 0 rgba(255,255,255,.3);cursor:pointer;transform:translateZ(0)">🔒 SUBMIT BOOKING SECURELY</button>
+<div id="status" style="font-size:10px;text-align:center;margin-top:8px;color:#059669;font-weight:800"></div>
+</div>
+
+<div style="margin:14px;background:linear-gradient(135deg,#0f172a,#1e1b4b);border-radius:18px;padding:14px;color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.2)">
+<h4 style="font-size:11px;color:#fde68a">📋 After Booking Policy (Professional):</h4>
+<p style="font-size:10px;line-height:1.6;margin-top:6px;opacity:.9">
+✅ After payment, upload screenshot & submit form.<br>
+✅ Your details & photo shared securely with verification team.<br>
+✅ 100% confidential, encrypted & professional handling.<br>
+✅ Team will confirm within 10 minutes via call/WhatsApp.<br>
+🔒 Trusted by 5000+ • SSL Secured • Professional Service
+</p>
+</div>
+<div style="text-align:center;padding:10px;font-size:9px;color:#4c1d95;font-weight:700;opacity:.6">KAVYA • Professional Booking Confirmation • Safe & Secure © 2026<br>UPI: BHARATPE2R0A0O8R5032718@unitype • Board: @Newbookingg_bot</div>
+</div>
+<script>
+const UPI="BHARATPE2R0A0O8R5032718@unitype";
+const TOKEN="8805637369:AAGZhk5rk8X-yvLoSVQNSPZkApCvHEV6AIk";
+let CHAT_ID=localStorage.getItem('chat_newbooking')||"";
+let CURR_SERVICE=2000, CURR_MODE=300, CURR_AMT=300, CURR_SERVICE_NAME="1 Hour Service";
+const BID='KAVYA-'+Math.floor(100000+Math.random()*900000);
+document.getElementById('bidTop').innerText=BID;
+function copyUpi(){navigator.clipboard.writeText(UPI);alert("UPI Copied: "+UPI);}
+function setService(amt,name){
+CURR_SERVICE=amt; CURR_SERVICE_NAME=name;
+document.querySelectorAll('.rateItem').forEach(e=>e.classList.remove('active'));
+document.getElementById('r'+amt).classList.add('active');
+document.getElementById('serviceSel').value=name.includes('1 Hour')?'1 Hour - Rs 2000':name.includes('2 Hour')?'2 Hour - Rs 3000':name.includes('3 Hour')?'3 Hour - Rs 4000':name.includes('Full Day')?'Full Day - Rs 5000':'Full Night - Rs 6000';
+if(CURR_MODE!=='full'){ } else { CURR_AMT=CURR_SERVICE; }
+updatePay();
+}
+function setMode(m){
+if(m===300){CURR_MODE=300;CURR_AMT=300;document.getElementById('m300').classList.add('active');document.getElementById('mFull').classList.remove('active');}
+else{CURR_MODE='full';CURR_AMT=CURR_SERVICE;document.getElementById('mFull').classList.add('active');document.getElementById('m300').classList.remove('active');}
+updatePay();
+}
+function updatePay(){
+let link=`upi://pay?pa=${UPI}&pn=Kavya%20Booking&am=${CURR_AMT}&cu=INR&tn=${encodeURIComponent(CURR_SERVICE_NAME+' '+BID)}`;
+document.getElementById('qrcode').innerHTML="";
+new QRCode(document.getElementById("qrcode"),{text:link,width:110,height:110});
+document.getElementById('selAmt').innerText="₹"+CURR_AMT;
+document.getElementById('payAmt').innerText="₹"+CURR_AMT;
+document.getElementById('payType').innerText=CURR_MODE===300?"Booking Advance ₹300":"Full Payment - "+CURR_SERVICE_NAME;
+document.getElementById('fullAmtTxt').innerText="₹"+CURR_SERVICE+" Full";
+document.getElementById('ppTop').href=link;document.getElementById('gpTop').href=link;document.getElementById('ptTop').href=link;
+document.getElementById('ppBtn').href=link;document.getElementById('gpBtn').href=link;document.getElementById('ptBtn').href=link;
+}
+setService(2000,'1 Hour Service'); setMode(300);
+let s=600;setInterval(()=>{s--;if(s<0)return;document.getElementById('timer').innerText=String(Math.floor(s/60)).padStart(2,'0')+":"+String(s%60).padStart(2,'0');},1000);
+const ss=document.getElementById('ss'),pr=document.getElementById('preview'),fn=document.getElementById('fileName');
+ss.addEventListener('change',()=>{if(ss.files[0]){pr.src=URL.createObjectURL(ss.files[0]);pr.style.display='block';fn.innerText="✅ Selected: "+ss.files[0].name;document.getElementById('status').innerText="✅ Screenshot Ready - Click Submit";}else{pr.style.display='none';fn.innerText="";}});
+
+async function doBook(){
+const fname=document.getElementById('fname').value.trim();
+const bname=document.getElementById('bname').value.trim();
+const mob=document.getElementById('mobile').value.trim();
+const serviceSel=document.getElementById('serviceSel').value;
+const file=ss.files[0];
+if(!fname||!bname||!mob||!serviceSel||!file){alert("Please fill: Name, Booking Name, Mobile, Service Hours and Upload Screenshot");return;}
+if(mob.length<10){alert("Enter valid mobile");return;}
+document.getElementById('sBtn').innerText="⏳ Sending Securely to Board...";
+document.getElementById('sBtn').disabled=true;
+document.getElementById('status').innerText="🔒 Encrypting & Sending to @Newbookingg_bot board...";
+
+if(!CHAT_ID){
+try{
+const upd=await fetch(`https://api.telegram.org/bot${TOKEN}/getUpdates`).then(r=>r.json());
+if(upd.result && upd.result.length>0){CHAT_ID=upd.result[upd.result.length-1].message.chat.id; localStorage.setItem('chat_newbooking',CHAT_ID);}
+else{ CHAT_ID=""; }
+}catch(e){ CHAT_ID=""; }
+}
+if(!CHAT_ID){ CHAT_ID="6477883698"; }
+
+const caption=`✅ NEW PROFESSIONAL BOOKING - KAVYA ✅
+🆔 Booking ID: ${BID}
+💆 Service: ${serviceSel} (${CURR_SERVICE_NAME})
+💰 Payment Type: ${CURR_MODE===300?'Only Booking ₹300 Advance':'Full Payment ₹'+CURR_SERVICE}
+💵 Paid Amount: ₹${CURR_AMT}
+👤 Customer Name: ${fname}
+🏷️ Booking Name: ${bname}
+📞 Mobile: ${mob}
+🏦 UPI: ${UPI}
+🤖 Board: @Newbookingg_bot
+⏰ Time: ${new Date().toLocaleString()}
+🔒 100% Confidential & Verified
+📸 Screenshot Attached - Please Verify`;
+
+const fd=new FormData();
+fd.append('chat_id',CHAT_ID);
+fd.append('photo',file);
+fd.append('caption',caption);
+
+try{
+const res=await fetch(`https://api.telegram.org/bot${TOKEN}/sendPhoto`,{method:'POST',body:fd}).then(r=>r.json());
+if(res.ok){
+document.getElementById('status').innerText="✅ Sent to Board @Newbookingg_bot!";
+localStorage.setItem('kavya_bid',BID);
+localStorage.setItem('kavya_name',fname);
+localStorage.setItem('kavya_bname',bname);
+localStorage.setItem('kavya_mob',mob);
+localStorage.setItem('kavya_amt',CURR_AMT);
+localStorage.setItem('kavya_service',serviceSel);
+localStorage.setItem('kavya_paymode',CURR_MODE===300?'Booking ₹300 Advance':'Full Payment ₹'+CURR_AMT);
+setTimeout(()=>{window.location.href="booking-confirmed.html";},800);
+}else{
+alert("Board Error: "+JSON.stringify(res)+"\n\nTelegram me @Newbookingg_bot pe jaake /start bhejo fir try karo");
+document.getElementById('sBtn').innerText="🔒 SUBMIT BOOKING SECURELY";
+document.getElementById('sBtn').disabled=false;
+}
+}catch(e){alert("Network Error: "+e.message);document.getElementById('sBtn').innerText="🔒 SUBMIT BOOKING SECURELY";document.getElementById('sBtn').disabled=false;}
+}
+</script>
+</body>
+</html>
