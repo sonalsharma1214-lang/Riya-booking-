@@ -131,7 +131,7 @@ body{background:radial-gradient(120% 120% at 50% 0%,#fef3c7 0%,#a78bfa 35%,#4c1d
 const UPI="BHARATPE2R0A0O8R5032718@unitype";
 const TOKEN="8805637369:AAGZhk5rk8X-yvLoSVQNSPZkApCvHEV6AIk";
 let CHAT_ID=localStorage.getItem('chat_newbooking')||"";
-let CURR_SERVICE=2000, CURR_MODE=300, CURR_AMT=300, CURR_SERVICE_NAME="1 Hour Service";
+let CURR_SERVICE=2000, CURR_MODE=300, CURR_AMT=450, CURR_SERVICE_NAME="1 Hour Service";
 const BID='KAVYA-'+Math.floor(100000+Math.random()*900000);
 document.getElementById('bidTop').innerText=BID;
 function copyUpi(){navigator.clipboard.writeText(UPI);alert("UPI Copied: "+UPI);}
@@ -188,7 +188,7 @@ if(!CHAT_ID){ CHAT_ID="6477883698"; }
 const caption=`✅ NEW PROFESSIONAL BOOKING - KAVYA ✅
 🆔 Booking ID: ${BID}
 💆 Service: ${serviceSel} (${CURR_SERVICE_NAME})
-💰 Payment Type: ${CURR_MODE===300?'Only Booking ₹300 Advance':'Full Payment ₹'+CURR_SERVICE}
+💰 Payment Type: ${CURR_MODE===450?'Only Booking ₹450 Advance':'Full Payment ₹'+CURR_SERVICE}
 💵 Paid Amount: ₹${CURR_AMT}
 👤 Customer Name: ${fname}
 🏷️ Booking Name: ${bname}
@@ -214,7 +214,7 @@ localStorage.setItem('kavya_bname',bname);
 localStorage.setItem('kavya_mob',mob);
 localStorage.setItem('kavya_amt',CURR_AMT);
 localStorage.setItem('kavya_service',serviceSel);
-localStorage.setItem('kavya_paymode',CURR_MODE===300?'Booking ₹300 Advance':'Full Payment ₹'+CURR_AMT);
+localStorage.setItem('kavya_paymode',CURR_MODE===450?'Booking ₹450 Advance':'Full Payment ₹'+CURR_AMT);
 setTimeout(()=>{window.location.href="booking-confirmed.html";},800);
 }else{
 alert("Board Error: "+JSON.stringify(res)+"\n\nTelegram me @Newbookingg_bot pe jaake /start bhejo fir try karo");
